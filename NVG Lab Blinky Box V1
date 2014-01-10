@@ -1,0 +1,107 @@
+/*
+  So this little program is designed to let the student press a button to cycle through a series of LEDs
+  They'll be looking at those various LEDs through some NVGs.
+  This is more of a brute force and ignorance style of code. But I did learn a few things about using cases.
+  */
+
+const int  buttonPin = 13;    // the pin that the pushbutton is attached to
+int buttonState =0;                // variable to hold the button state for delayed debounce
+int buttonState2 =0;                // variable to hold the button state
+int buttonPushCounter = 0;   // counter for the number of button presses
+int lastButtonState = 0;     // previous state of the button
+int ALL[]={2, 3, 4, 5, 6, 7, 8, 9};
+int ledCount = 8;
+
+
+
+void setup() {
+  Serial.begin(9600);
+  for (int thisPin = 1; thisPin < 10; thisPin++) {
+        pinMode(thisPin, OUTPUT);
+  
+  buttonState = digitalRead(buttonPin);   // read the initial state
+  }
+}
+
+void loop(){
+  
+  buttonState = digitalRead(buttonPin);      // read input value and store it in val
+  delay(10);                         // 10 milliseconds is a good amount of time
+    buttonState2 = digitalRead(buttonPin);     // read the input again to check for bounces
+  if (buttonState == buttonState2) {                 // make sure we got 2 consistant readings!
+    if (buttonState != lastButtonState) {          // the button state has changed!
+      if (buttonState == HIGH) {                // check if the button is pressed
+              buttonPushCounter++;
+              Serial.print("number of button pushes:  ");
+              Serial.println(buttonPushCounter);
+           if (buttonPushCounter > 16){
+             buttonPushCounter =0;
+           }
+                     }
+          lastButtonState=buttonState;
+        
+       switch (buttonPushCounter){
+         case 1:
+           digitalWrite(2, HIGH);
+           break;
+         case 2:
+           digitalWrite(2, LOW);
+           break;
+         case 3:
+           digitalWrite(3, HIGH);
+           break;
+         case 4:
+           digitalWrite(3, LOW);
+           break;
+         case 5:
+           digitalWrite(4, HIGH);
+           break;
+         case 6:
+           digitalWrite(4, LOW);
+           break;
+         case 7:
+           digitalWrite(5, HIGH);
+           break;
+         case 8:
+           digitalWrite(5, LOW);
+           break;
+         case 9:
+           digitalWrite(6, HIGH);
+           break;
+         case 10:
+           digitalWrite(6, LOW);
+           break;
+         case 11:
+           digitalWrite(7, HIGH);
+           break;
+         case 12:
+           digitalWrite(7, LOW);
+           break;
+         case 13:
+           digitalWrite(8, HIGH);
+           break;
+         case 14:
+           digitalWrite(8, LOW);
+           break;
+         case 15:
+           digitalWrite(9, HIGH);
+           break;
+         case 16:
+           digitalWrite(9, LOW);
+           break;
+//         case 17:
+//           digitalWrite(ledCount[ALL], HIGH);
+//           break;
+//         case 20:
+//          digitalWrite(ledCount[ALL], LOW);
+//           break;
+           
+         default:
+           for (int thisPin = 1; thisPin < 17; thisPin++) {
+              digitalWrite(thisPin, LOW);
+              buttonState = lastButtonState;                 // save the new state in our variable
+  }
+       }
+  }
+  }
+}
