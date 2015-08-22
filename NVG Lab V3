@@ -1,0 +1,54 @@
+/*
+  So this little program is designed to let the student press a button to cycle through a series of LEDs
+  They'll be looking at those various LEDs through some NVGs.
+  This is more subtle style of blinking. I had some help with this from https://github.com/AlphaBetaPhi
+  */
+
+
+int buttonPin = 12;
+int startPin = 2;
+int maxPin = 9;
+
+int ledCounter = 0;
+
+int buttonState;             // the current reading from the input pin
+int lastButtonState = LOW;   // the previous reading from the input pin
+
+long lastDebounceTime = 0;  // the last time the output pin was toggled
+long debounceDelay = 50;    // the debounce time; increase if the output flickers
+
+void setup()
+{
+  for(int x = startPin; x <= maxPin; x++)
+  {
+    pinMode(x, OUTPUT);
+    digitalWrite(x, LOW);
+  }
+}
+
+void loop()
+{
+  int buttonStateRead = digitalRead(buttonPin);
+
+  if (buttonStateRead != lastButtonState) {
+    lastDebounceTime = millis();
+  } 
+  
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer
+    // than the debounce delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (buttonStateRead != buttonState) {
+      buttonState = buttonStateRead;
+
+      if (buttonState == HIGH) {
+        digitalWrite(ledCounter, HIGH);
+        digitalWrite(ledCounter - 1, LOW);
+        ledCounter++;
+        if(ledCounter > maxPin) ledCounter = startPin;
+      }
+    }
+  }
+   lastButtonState = buttonStateRead;
+}
